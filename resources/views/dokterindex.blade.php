@@ -3,11 +3,18 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1 class="text-center mb-3">Selamat Datang Di Sistem RS Citra</h1>
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between">
 
-            <div class="card my-3">
-                <div class="card-header">{{ __('Dokter Tersedia') }}</div>
+                        <div class="col-2">{{ __('Dokter') }}
+                        </div>
+                        <div class="col-1"><a href="tambah-dokter" class="btn btn-primary btn-sm"><i
+                                    class="fa fa-plus"></i>Tambah</a>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -29,8 +36,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Nama</th>
+                                    <th>Email</th>
                                     <th>Status</th>
-                                    <th>Hari Libur</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -42,7 +49,7 @@
 
                                 $i = 1;
                                 @endphp
-                                @foreach ($dokter as $index)
+                                @foreach ($users as $index)
 
                                 <tr>
                                     <td class="text-center">
@@ -53,43 +60,22 @@
                                         {{ $index->name }}
                                     </td>
                                     <td>
+                                        {{ $index->email }}
+                                    </td>
+                                    <td>
                                         Dokter
                                     </td>
                                     <td>
-                                        @php if ($index->jadwal != NULL) {
-                                        $hari = explode(',', $index->jadwal->hari);
-                                        if (in_array('0', $hari)) {
-                                        echo 'Minggu ';
-                                        }
-                                        if (in_array('1', $hari)) {
-                                        echo 'Senin ';
-                                        }
-                                        if (in_array('2', $hari)) {
-                                        echo 'Selasa ';
-                                        }
-                                        if (in_array('3', $hari)) {
-                                        echo 'Rabu ';
-                                        }
-                                        if (in_array('4', $hari)) {
-                                        echo 'Kamis ';
-                                        }
-                                        if (in_array('5', $hari)) {
-                                        echo 'Jumat ';
-                                        }
-                                        if (in_array('6 ', $hari)) {
-                                        echo 'Sabtu';
-                                        }
-                                        }else{
-                                        echo'Tidak ada hari libur';
-                                        }
-                                        @endphp
-
-                                    </td>
-                                    <td>
                                         <div class="text-right">
-                                            <a href="/buat-jadwal/{{$index->id}}" class="btn btn-info btn-sm"><i
+                                            <a href="/dokter-edit/{{$index->id}}" class="btn btn-info btn-sm"><i
                                                     class="fa fa-edit"></i>
-                                                Buat Jadwal</a>
+                                                Edit</a>
+                                            <form action="/dokter/{{$index->id}}" method="post">
+                                                @method('delete')
+                                                @csrf
+                                                <button type="submit" class="btn btn-danger btn-sm"><i
+                                                        class="fa fa-trash"></i> Delete</button>
+                                            </form>
 
                                         </div>
                                     </td>
@@ -102,7 +88,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
