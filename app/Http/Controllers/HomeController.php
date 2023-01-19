@@ -38,9 +38,12 @@ class HomeController extends Controller
             $data['dokter'] = Users::with('jadwal')->where('role', 'dokter')->get();
             $data['pengajuan'] = pengajuan_jadwal::with('pasien', 'dokter')->where('id_pasien', auth()->user()->id)->orderby('jadwal', 'DESC')->get();
         };
-        // $data['hari'] = Jadwal_dokter::where('user_id', auth()->user()->id)->first();
+        $data['hari'] = Jadwal_dokter::where('user_id', auth()->user()->id)->first();
         // $data = [];
         // dd($data);
+        if (auth()->user()->role == 'admin') {
+            return redirect()->to('/dokter');
+        }
         return view('home', $data);
     }
     public function buatjadwal($id)
